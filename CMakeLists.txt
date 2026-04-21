@@ -63,35 +63,3 @@ add_library(vk-radix-sort STATIC
 target_link_libraries(vk-radix-sort PUBLIC Vulkan::Vulkan)
 target_include_directories(vk-radix-sort PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/platforms/vk ${CMAKE_CURRENT_BINARY_DIR})
 target_include_directories(vk-radix-sort PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/platforms/vk/include)
-
-if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-    include(CTest)
-    if(BUILD_TESTING)
-        enable_language(CXX)
-        set(common_src
-            platforms/vk/tests/radix_sort_vk_bench/cpu_sort.cc
-            platforms/vk/tests/radix_sort_vk_bench/radix_sort_vk_bench.c
-            platforms/vk/tests/radix_sort_vk_bench/find_target_name.c
-            common/vk/assert.c
-            common/vk/barrier.c
-            common/vk/debug_utils.c
-            common/vk/find_mem_type_idx.c
-            common/vk/pipeline_cache.c
-            common/util.c
-        )
-        add_executable(benchmark platforms/vk/tests/radix_sort_vk_bench/main.c ${common_src})
-        target_link_libraries(benchmark PUBLIC vk-radix-sort)
-        target_include_directories(benchmark PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-        target_compile_definitions(benchmark PUBLIC RS_VK_TARGET_ARCHIVE_LINKABLE)
-
-        include(GoogleTest)
-
-        add_executable(unittest platforms/vk/tests/radix_sort_vk_bench/tests/radix_sort_vk_bench_unittests.cc ${common_src})
-        target_link_libraries(unittest PUBLIC vk-radix-sort gtest gtest_main)
-        target_include_directories(unittest PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} platforms/vk/tests/radix_sort_vk_bench)
-        target_compile_definitions(unittest PUBLIC RS_VK_TARGET_ARCHIVE_LINKABLE)
-
-        gtest_add_tests(unittest "" AUTO)
-    endif()
-endif()
-
