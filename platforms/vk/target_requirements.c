@@ -65,7 +65,7 @@ radix_sort_vk_target_get_requirements(radix_sort_vk_target_t const *        targ
 
     for (uint32_t ii = 0; ii < ARRAY_LENGTH_MACRO(rs_target_header->extensions.bitmap); ii++)
       {
-        ext_count += __builtin_popcount(rs_target_header->extensions.bitmap[ii]);
+        ext_count += POPCOUNT_MACRO(rs_target_header->extensions.bitmap[ii]);
       }
 
     if (requirements->ext_names == NULL)
