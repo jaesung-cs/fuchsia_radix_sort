@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(RadixSort LANGUAGES C)
+project(fuchsia_radix_sort LANGUAGES C)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -45,7 +45,7 @@ foreach(target ${targets})
     endforeach()
 endforeach()
 
-add_library(vk-radix-sort STATIC
+add_library(fuchsia_radix_sort STATIC
     platforms/vk/radix_sort_vk.c
     platforms/vk/radix_sort_vk_ext.h
     platforms/vk/shaders/push.h
@@ -60,6 +60,7 @@ add_library(vk-radix-sort STATIC
     ${shader_binary}
 )
 
-target_link_libraries(vk-radix-sort PUBLIC Vulkan::Vulkan)
-target_include_directories(vk-radix-sort PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/platforms/vk ${CMAKE_CURRENT_BINARY_DIR})
-target_include_directories(vk-radix-sort PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/platforms/vk/include)
+target_link_libraries(fuchsia_radix_sort PUBLIC Vulkan::Headers)
+target_include_directories(fuchsia_radix_sort PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/platforms/vk ${CMAKE_CURRENT_BINARY_DIR})
+target_include_directories(fuchsia_radix_sort PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/platforms/vk/include)
+target_compile_definitions(fuchsia_radix_sort PUBLIC VK_NO_PROTOTYPES)
