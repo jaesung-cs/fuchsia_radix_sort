@@ -60,7 +60,16 @@ add_library(fuchsia_radix_sort STATIC
     ${shader_binary}
 )
 
-target_link_libraries(fuchsia_radix_sort PUBLIC Vulkan::Headers)
+if(FUCHSIA_RADIX_SORT_USE_VOLK)
+    target_link_libraries(fuchsia_radix_sort PUBLIC Vulkan::Headers)
+    target_link_libraries(fuchsia_radix_sort PRIVATE volk::volk)
+    target_compile_definitions(fuchsia_radix_sort PUBLIC
+        VK_NO_PROTOTYPES
+        FUCHSIA_RADIX_SORT_USE_VOLK
+    )
+else()
+    target_link_libraries(fuchsia_radix_sort PUBLIC Vulkan::Vulkan)
+endif()
+
 target_include_directories(fuchsia_radix_sort PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/platforms/vk ${CMAKE_CURRENT_BINARY_DIR})
 target_include_directories(fuchsia_radix_sort PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/platforms/vk/include)
-target_compile_definitions(fuchsia_radix_sort PUBLIC VK_NO_PROTOTYPES)
